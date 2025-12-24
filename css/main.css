@@ -91,3 +91,88 @@ li {
   display: flex;
   justify-content: space-between;x
 }
+
+/* MODAL BACKDROP */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* FORM */
+.modal-form {
+  background: #ffffff;
+  width: 100%;
+  max-width: 420px;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  animation: modalScale 0.25s ease;
+}
+
+/* INPUT WRAPPER */
+.modal-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f3f4f6;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+/* ICON */
+.modal-input-wrapper i {
+  color: #6b7280;
+  font-size: 18px;
+}
+
+/* INPUT */
+#modal-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 15px;
+  color: #111827;
+}
+
+#modal-input::placeholder {
+  color: #9ca3af;
+}
+
+/* BUTTON */
+.add-btn {
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.add-btn:hover {
+  background: #4338ca;
+}
+
+.hidden{
+  display: none;
+}
+
+/* ANIMATION */
+@keyframes modalScale {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

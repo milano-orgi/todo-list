@@ -1,9 +1,11 @@
-import { getTodo } from "./getData.js";
+import { getTodo, patchTodo } from "./getData.js";
 
 const formEl = document.querySelector("#myForm");
 const Ul = document.querySelector("ul");
 const li = document.querySelectorAll(`.li`);
-console.log(li);
+const modal = document.querySelector(`.modal`);
+const modalInput = document.querySelector(`#modal-input`);
+const modalForm = document.querySelector(`.modal-form`);
 
 formEl.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -16,6 +18,19 @@ formEl.addEventListener("submit", async (e) => {
   formEl.textInput.value = "";
 });
 
+function edit(id) {
+  modalForm.addEventListener(`submit`, async (e) => {
+    e.preventDefault();
+    await patchTodo(
+      `http://localhost:8080/todos/${id}`,
+      modalForm.modalInput.value
+    );
+    console.log(modalForm.modalInput.value);
+    await getTodo("http://localhost:8080/todos");
+    modalForm.reset();
+  });
+}
+
 export function uptadeUi(list) {
   Ul.innerHTML = "";
   list.forEach((todo) => {
@@ -24,7 +39,7 @@ export function uptadeUi(list) {
       <li data-id=${id} class="li">
         <span>${title}</span>
         <div>
-          <button class="edit">Edit</button>
+          <button data-id=${id} class="edit">Edit</button>
           <button class="delete">Delete</button>
         </div>
       </li>
@@ -53,8 +68,7 @@ getTodo("http://localhost:8080/todos");
 Ul.addEventListener("click", async (e) => {
   if (e.target.tagName === "BUTTON" && e.target.textContent === "Delete") {
     const li = e.target.closest("li");
-    const id = li.dataset.id; // li ga data-id qo‘shgan bo‘lish kerak
-
+    const id = li.dataset.id;
     li.remove();
 
     try {
@@ -64,5 +78,22 @@ Ul.addEventListener("click", async (e) => {
     } catch (error) {
       console.log("O'chirishda muammo:", error);
     }
+  }
+  if (e.target.classList.contains(`edit`)) {
+    openModal();
+    let id = e.target.dataset.id;
+    edit(id);
+    modalInput.value =
+      e.target.parentElement.previousElementSibling.textContent;
+  }
+});
+
+function openModal() {
+  modal.classList.toggle(`hidden`);
+}
+
+document.addEventListener(`keydown`, (e) => {
+  if (e.key == `Escape`) {
+    openModal();
   }
 });
